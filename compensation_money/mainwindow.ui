@@ -35,8 +35,8 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>20</y>
+      <x>40</x>
+      <y>10</y>
       <width>351</width>
       <height>361</height>
      </rect>
@@ -333,10 +333,10 @@
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>10</y>
-       <width>101</width>
-       <height>91</height>
+       <x>20</x>
+       <y>0</y>
+       <width>113</width>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -378,27 +378,33 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="about_pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>90</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>90</width>
+          <height>31</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>关于</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
-   </widget>
-   <widget class="QLabel" name="xls_label">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>400</y>
-      <width>101</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>文件名: data.xls</string>
-    </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>429</x>
-      <y>20</y>
+      <x>420</x>
+      <y>10</y>
       <width>131</width>
       <height>301</height>
      </rect>
@@ -487,6 +493,19 @@
      </layout>
     </widget>
    </widget>
+   <widget class="QLabel" name="xls_label">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>370</y>
+      <width>94</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>文件名: data.xls</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
@@ -498,7 +517,7 @@
      <x>0</x>
      <y>0</y>
      <width>598</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
