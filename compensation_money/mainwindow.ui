@@ -10,6 +10,24 @@
     <height>480</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>598</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>598</width>
+    <height>480</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>退休金计算器</string>
   </property>
@@ -31,7 +49,7 @@
       <rect>
        <x>16</x>
        <y>39</y>
-       <width>311</width>
+       <width>328</width>
        <height>311</height>
       </rect>
      </property>
@@ -126,7 +144,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="0" column="3">
          <widget class="QComboBox" name="retire_age_comboBox">
           <property name="maximumSize">
            <size>
@@ -138,6 +156,12 @@
         </item>
         <item row="0" column="1">
          <widget class="QDateEdit" name="birthday_dateEdit">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
@@ -146,7 +170,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="0" column="2">
          <widget class="QLabel" name="retire_label">
           <property name="maximumSize">
            <size>
@@ -162,18 +186,18 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="Line" name="line_3">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2">
+        <item row="0" column="1">
          <widget class="QLabel" name="company_out_time_label">
           <property name="text">
            <string>从本单位离职时间</string>
@@ -183,7 +207,7 @@
         <item row="1" column="0">
          <widget class="QDateEdit" name="company_in_dateEdit"/>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="1">
          <widget class="QDateEdit" name="company_out_dateEdit"/>
         </item>
         <item row="0" column="0">
@@ -193,18 +217,18 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="Line" name="line_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
+       <widget class="Line" name="line_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="2">
+        <item row="1" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QLineEdit" name="working_suspend_year_lineEdit"/>
@@ -245,7 +269,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="1">
          <widget class="QLabel" name="working_suspend_time_label">
           <property name="text">
            <string>未上班累计时间</string>
@@ -255,14 +279,14 @@
         <item row="1" column="0">
          <widget class="QDateEdit" name="dateEdit_4"/>
         </item>
-        <item row="0" column="1">
-         <widget class="Line" name="line_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -273,25 +297,18 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="1">
          <widget class="QLabel" name="society_average_label">
           <property name="text">
            <string>上年度社会平均工资(元)</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="1" column="1">
          <widget class="QLineEdit" name="society_average_lineEdit"/>
         </item>
         <item row="1" column="0">
          <widget class="QLineEdit" name="personal_average_lineEdit"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="Line" name="line_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
@@ -397,7 +414,7 @@
       <x>420</x>
       <y>330</y>
       <width>151</width>
-      <height>80</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -409,10 +426,10 @@
     <widget class="QWidget" name="verticalLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>30</x>
        <y>10</y>
-       <width>111</width>
-       <height>71</height>
+       <width>101</width>
+       <height>91</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -420,13 +437,13 @@
        <widget class="QPushButton" name="generate_pushButton">
         <property name="minimumSize">
          <size>
-          <width>111</width>
+          <width>90</width>
           <height>31</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>111</width>
+          <width>90</width>
           <height>31</height>
          </size>
         </property>
@@ -439,13 +456,13 @@
        <widget class="QPushButton" name="xls_calculate_pushButton">
         <property name="minimumSize">
          <size>
-          <width>111</width>
+          <width>90</width>
           <height>31</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>111</width>
+          <width>90</width>
           <height>31</height>
          </size>
         </property>
@@ -460,8 +477,8 @@
    <widget class="QLabel" name="xls_label">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>380</y>
+      <x>350</x>
+      <y>400</y>
       <width>101</width>
       <height>20</height>
      </rect>
@@ -481,7 +498,7 @@
      <x>0</x>
      <y>0</y>
      <width>598</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
