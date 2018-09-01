@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>退休金计算器</string>
+   <string>赔偿金计算器</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QGroupBox" name="groupBox">
@@ -47,8 +47,8 @@
     <widget class="QWidget" name="verticalLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>16</x>
-       <y>39</y>
+       <x>10</x>
+       <y>30</y>
        <width>328</width>
        <height>311</height>
       </rect>
@@ -58,11 +58,20 @@
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="1">
          <widget class="QLineEdit" name="name_lineEdit">
+          <property name="minimumSize">
+           <size>
+            <width>118</width>
+            <height>21</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>100</width>
-            <height>16777215</height>
+            <width>118</width>
+            <height>21</height>
            </size>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -71,13 +80,13 @@
           <property name="minimumSize">
            <size>
             <width>30</width>
-            <height>0</height>
+            <height>21</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>30</width>
-            <height>16777215</height>
+            <height>21</height>
            </size>
           </property>
           <property name="text">
@@ -117,7 +126,7 @@
            </size>
           </property>
           <property name="text">
-           <string>  性别:</string>
+           <string>性别:</string>
           </property>
          </widget>
         </item>
@@ -125,51 +134,6 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QLabel" name="birth_label">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>生日:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QComboBox" name="retire_age_comboBox">
-          <property name="maximumSize">
-           <size>
-            <width>70</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDateEdit" name="birthday_dateEdit">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QLabel" name="retire_label">
           <property name="maximumSize">
@@ -186,10 +150,159 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="QDateEdit" name="birthday_dateEdit">
+          <property name="minimumSize">
+           <size>
+            <width>118</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>118</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QComboBox" name="retire_age_comboBox">
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="birth_label">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>生日:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>25</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
       <item>
        <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="working_suspended_year_lineEdit">
+            <property name="inputMethodHints">
+             <set>Qt::ImhNone</set>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="year_label">
+            <property name="text">
+             <string>年</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="working_suspended_month_lineEdit">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="month_label">
+            <property name="text">
+             <string>月</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="working_start_label">
+          <property name="minimumSize">
+           <size>
+            <width>157</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>157</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>个人开始工作时间</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="working_suspended_time_label">
+          <property name="text">
+           <string>未上班累计时间</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QDateEdit" name="working_start_dateEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -205,79 +318,37 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QDateEdit" name="company_in_dateEdit"/>
+         <widget class="QDateEdit" name="company_in_dateEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDateEdit" name="company_out_dateEdit"/>
+         <widget class="QDateEdit" name="company_out_dateEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="company_in_time_label">
+          <property name="minimumSize">
+           <size>
+            <width>157</width>
+            <height>19</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>157</width>
+            <height>19</height>
+           </size>
+          </property>
           <property name="text">
            <string>进本单位时间</string>
           </property>
          </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLineEdit" name="working_suspend_year_lineEdit"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="year_label">
-            <property name="text">
-             <string>年</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="working_suspend_month_lineEdit"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="month_label">
-            <property name="text">
-             <string>月</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="working_suspend_day_lineEdit"/>
-          </item>
-          <item>
-           <widget class="QLabel" name="day_label">
-            <property name="text">
-             <string>日</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="working_start_label">
-          <property name="text">
-           <string>个人开始工作时间</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="working_suspend_time_label">
-          <property name="text">
-           <string>未上班累计时间</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QDateEdit" name="dateEdit_4"/>
         </item>
        </layout>
       </item>
@@ -292,6 +363,18 @@
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
          <widget class="QLabel" name="personal_average_label">
+          <property name="minimumSize">
+           <size>
+            <width>157</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>157</width>
+            <height>21</height>
+           </size>
+          </property>
           <property name="text">
            <string>上年度个人平均工资(元)</string>
           </property>
@@ -305,10 +388,24 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="society_average_lineEdit"/>
+         <widget class="QLineEdit" name="society_average_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="placeholderText">
+           <string>0</string>
+          </property>
+         </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLineEdit" name="personal_average_lineEdit"/>
+         <widget class="QLineEdit" name="personal_average_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="placeholderText">
+           <string>0</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -345,13 +442,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="text">
@@ -364,13 +461,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="text">
@@ -383,13 +480,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>31</height>
+          <height>24</height>
          </size>
         </property>
         <property name="text">
@@ -437,6 +534,9 @@
         <property name="enabled">
          <bool>true</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -461,6 +561,9 @@
       </item>
       <item>
        <widget class="QLineEdit" name="working_years_lineEdit">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -484,9 +587,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="working_years_lineEdit_2">
+       <widget class="QLineEdit" name="compensation_money_lineEdit">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
