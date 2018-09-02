@@ -18,19 +18,16 @@ from mainwindow import Ui_MainWindow
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QApplication, QInputDialog, QLineEdit
 from PyQt5 import QtGui
 from PyQt5.QtGui import QIcon, QPixmap, QIntValidator, QDoubleValidator
-from time import sleep
 import datetime
-import sqlite3
+import calendar
 import sys
 # import logging
 import xlrd
 import xlwt
 import os
-import datetime
-import re
 
 
-class Compensation_Money(QMainWindow):
+class Compensation(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
@@ -51,6 +48,9 @@ class Compensation_Money(QMainWindow):
         # 输出按钮
         self.ui.generate_pushButton.clicked.connect(
             self.generate_pushButton_clicked)
+        # 批量输出按钮
+        self.ui.xls_calculate_pushButton.clicked.connect(
+            self.xls_calculate_pushButton_clicked)
         # 关于按钮
         self.ui.about_pushButton.clicked.connect(self.about_pushButton_clicked)
         # 更新退休年龄
@@ -83,7 +83,104 @@ class Compensation_Money(QMainWindow):
         self.update_working_years()
 
     def generate_pushButton_clicked(self):
-        pass
+        name = self.ui.name_lineEdit.text()
+        gender = self.ui.gender_comboBox.currentText()
+        birth = self.ui.birthday_dateEdit.text()
+        retire_age = self.ui.retire_age_comboBox.currentText()
+        workbook = xlwt.Workbook()
+        sheet = workbook.add_sheet("赔偿金登记表")
+        row0 = [
+            '序号',
+            '姓名',
+            '性别',
+            '生日',
+            '退休年龄',
+            '个人工作开始时间',
+            '未上班累计时间(年)',
+            '未上班累计时间(月)',
+            '进本单位时间',
+            '从本单位离职时间',
+            '上年度个人平均工资(元)',
+            '上年度社会平均工资三倍(元)',
+            '离退休时间',
+            '累计工龄',
+            '赔偿金额',
+        ]
+        for i in range(len(row0)):
+            sheet.write(0, i, row0[i])
+        row1 = [
+            1,
+            name,
+            gender,
+            birth,
+            retire_age,
+                ]
+        for i in range(len(row1)):
+            sheet.write(1, i, row1[i])
+        workbook.save(os.path.join(os.getcwd(), "赔偿金登记表-{}.xls".format(name)))
+
+    def xls_calculate_pushButton_clicked(self):
+        """
+        批量计算data.xls文件中的数据
+        """
+        try:
+            workbook = xlrd.open_workbook('data.xls')
+            sheet = workbook.sheet_by_index(0)
+            sheet_rows = sheet.nrows
+            row = []
+            for i in range(sheet_rows):
+                row.append(sheet.row_values(i))
+            for i in range(1, len(row)):
+                for j in [6, 7]:
+                    if not row[i][j]:
+                        row[i][j] = 0
+                birth_date = Compensation.dateStr_to_date(row[i][3])
+                retire_age = int(row[i][4])
+                retire_date = Compensation.calculate_time_to_retire(
+                    birth_date, retire_age)
+                # 离退休时间
+                row[i][12] = "{}年{}月".format(retire_date[0], retire_date[1])
+                working_start_date = Compensation.dateStr_to_date(row[i][5])
+                year_sus = int(row[i][6])
+                month_sus = int(row[i][7])
+                working_years_Y_M = Compensation.calculate_working_years(
+                    working_start_date, year_sus, month_sus)
+                # 累计工龄
+                row[i][13] = "{}年{}月".format(working_years_Y_M[0],
+                                             working_years_Y_M[1])
+                company_in_date = Compensation.dateStr_to_date(row[i][8])
+                company_out_date = Compensation.dateStr_to_date(row[i][9])
+                personal_average = float(row[i][10])
+                society_average = float(row[i][11])
+                compensation = Compensation.calculate_compensation_money(
+                    company_in_date, company_out_date, personal_average,
+                    society_average)
+                # 08年前赔偿金额
+                row[i][14] = "{}".format(compensation[1])
+                # 08年后赔偿金额
+                row[i][15] = "{}".format(compensation[2])
+                # 赔偿金额
+                row[i][16] = "{}".format(compensation[0])
+            data = xlwt.Workbook()
+            table = data.add_sheet("赔偿金登记表")
+            for i in range(len(row)):
+                for j in range(len(row[i])):
+                    table.write(i, j, row[i][j])
+            data.save('data_new.xls')
+            info = QMessageBox.information(self, "信息", "数据导出成功",
+                                           QMessageBox.Ok)
+        except Exception as e:
+            QMessageBox.information(self, "信息", str(e), QMessageBox.Ok)
+
+    @staticmethod
+    def dateStr_to_date(dateStr):
+        """
+        将日期(例:20010101)转换为datetime.date类
+        """
+        year = int(dateStr[:4])
+        month = int(dateStr[4:6])
+        day = int(dateStr[6:])
+        return datetime.date(year, month, day)
 
     def about_pushButton_clicked(self):
         msgBox = QMessageBox.information(
@@ -109,17 +206,12 @@ class Compensation_Money(QMainWindow):
         """
         更新程序中距离退休时间一栏
         """
-        birthday_date = self.ui.birthday_dateEdit.date()
-        birth_date = self.dateEdit_to_date(birthday_date)
-        birth = [birth_date.year, birth_date.month, birth_date.day]
         if self.ui.retire_age_comboBox.currentText():
-            retire_age = birth
-            retire_age[0] += int(self.ui.retire_age_comboBox.currentText())
-            retire_date = datetime.date(retire_age[0], retire_age[1],
-                                        retire_age[2])
-            today = datetime.date.today()
-            retire_date_Y_M = Compensation_Money.calculate_time_delta(
-                today, retire_date)
+            birthday_date = self.ui.birthday_dateEdit.date()
+            birth_date = self.dateEdit_to_date(birthday_date)
+            retire_age = int(self.ui.retire_age_comboBox.currentText())
+            retire_date_Y_M = Compensation.calculate_time_to_retire(
+                birth_date, retire_age)
             self.ui.time_to_retire_lineEdit.setText(
                 str(retire_date_Y_M[0]) + "年" + str(retire_date_Y_M[1]) + "月")
             if retire_date_Y_M[0] < 5:
@@ -128,32 +220,79 @@ class Compensation_Money(QMainWindow):
                 self.ui.time_to_retire_lineEdit.setStyleSheet("color:black")
 
     @staticmethod
-    def calculate_time_delta(start_date, end_date, lower=False):
+    def calculate_time_to_retire(birth_date, retire_age):
+        """
+        计算距离退休的时间,月份向上取整
+        """
+        birth = [birth_date.year, birth_date.month, birth_date.day]
+        retire_date_ = birth.copy()
+        retire_date_[0] += retire_age
+        retire_date = datetime.date(retire_date_[0], retire_date_[1],
+                                    retire_date_[2])
+        today = datetime.date.today()
+        retire_date_Y_M = Compensation.calculate_time_delta(today, retire_date)
+        return retire_date_Y_M
+
+    @staticmethod
+    def calculate_time_delta(start_date, end_date, lower=False, check_=False):
         """
         计算时间间隔,返回年,月,区间包含前后两天, 默认不满一月的按一个月计算
-        input: 开始日期(start_date), 结束日期(end_date), 去除不满一月的天数(lower)
+        input: 开始日期(start_date), 结束日期(end_date), \
+                去除不满一月的天数(lower), 检查最后是否刚满一个月,两种情况(check_)
         type:  datetime.date
         return:delta_year, delta_month
         type:  datetime.date
         """
+
+        def is_Full_one_month():
+            nonlocal start_date
+            nonlocal end_date
+            is_Full_one = False
+            end_month_end_date = datetime.date(
+                end_date.year, end_date.month,
+                calendar.monthrange(end_date.year, end_date.month)[1])
+            if start_date.day == 1:
+                if end_date.day == end_month_end_date.day:
+                    is_Full_one = True
+            return is_Full_one
+
+        def is_Full_cross_month():
+            nonlocal start_date
+            nonlocal end_date
+            is_Full_cross_month = False
+            if start_date.day - 1 == end_date.day:
+                is_Full_cross_month = True
+            return is_Full_cross_month
+
         delta_day = end_date.day - start_date.day
         delta_month = end_date.month - start_date.month
         delta_year = end_date.year - start_date.year
         if lower:
-            if delta_day < 0:
+            if delta_day < -1:
                 delta_month -= 1
+            if is_Full_one_month():
+                delta_month += 1
         else:
             if delta_day >= 0:
                 delta_month += 1
+            # if is_Full_one_month():
+                # delta_month += 1
         if delta_month < 0:
             delta_month += 12
             delta_year -= 1
         if delta_month == 12:
             delta_month = 0
             delta_year += 1
-        return delta_year, delta_month
+        if not check_:
+            return delta_year, delta_month
+        if check_:
+            return delta_year, delta_month, is_Full_one_month(
+            ) or is_Full_cross_month()
 
     def update_working_years(self):
+        """
+        更新工龄数值,月份向下取整
+        """
         date = self.ui.working_start_dateEdit.date()
         working_start_date = self.dateEdit_to_date(date)
         # 未上班时间
@@ -165,7 +304,7 @@ class Compensation_Money(QMainWindow):
             year_sus = int(year_sus_str)
         if month_sus_str:
             month_sus = int(month_sus_str)
-        delta_year, delta_month = Compensation_Money.calculate_working_years(
+        delta_year, delta_month = Compensation.calculate_working_years(
             working_start_date, year_sus, month_sus)
         self.ui.working_years_lineEdit.setText("{}年{}月".format(
             delta_year, delta_month))
@@ -197,7 +336,7 @@ class Compensation_Money(QMainWindow):
         @raise e:  Description
         """
         today = datetime.date.today()
-        time_delta = Compensation_Money.calculate_time_delta(
+        time_delta = Compensation.calculate_time_delta(
             working_start_date, today, lower=True)
         delta_year = time_delta[0] - year_sus
         delta_month = time_delta[1] - month_sus
@@ -207,6 +346,9 @@ class Compensation_Money(QMainWindow):
         return delta_year, delta_month
 
     def update_compensation_money(self):
+        """
+        更新赔偿金数据
+        """
         company_in_date = self.dateEdit_to_date(
             self.ui.company_in_dateEdit.date())
         company_out_date = self.dateEdit_to_date(
@@ -217,51 +359,82 @@ class Compensation_Money(QMainWindow):
             personal_average_str = '0'
         if not society_average_str:
             society_average_str = '0'
-        personal_average = float(personal_average_str)
-        society_average = float(society_average_str)
-        compensation_money = Compensation_Money.calculate_compensation_money(
+        try:
+            personal_average = float(personal_average_str)
+        except Exception as e:
+            personal_average = 0
+        try:
+            society_average = float(society_average_str)
+        except Exception as e:
+            society_average = 0
+        compensation_money = Compensation.calculate_compensation_money(
             company_in_date, company_out_date, personal_average,
             society_average)
-        self.ui.compensation_money_lineEdit.setText(str(compensation_money) + "元")
+        self.ui.compensation_money_lineEdit.setText(
+            str(compensation_money[0]) + "元")
+        self.ui.compensation_mon_bef_lineEdit.setText(
+            str(compensation_money[1]) + "月")
+        self.ui.compensation_mon_aft_lineEdit.setText(
+            str(compensation_money[2]) + "月")
 
     @staticmethod
     def calculate_compensation_money(company_in_date, company_out_date,
                                      personal_average, society_average):
+        """
+        计算赔偿金数据,包括08年以前及之后的赔偿金数据,目前计算是两者最大各12个月
+        """
+        month_before = 0
+        month_after = 0
+
         def money_before(company_in_date, company_out_date, personal_average):
+            nonlocal month_before
             if company_in_date.year < 2008:
                 if company_out_date.year > 2007:
                     company_out_date = datetime.date(2007, 12, 31)
-                date_delta = Compensation_Money.calculate_time_delta(
+                date_delta = Compensation.calculate_time_delta(
                     company_in_date, company_out_date)
                 if date_delta[0] > 11 or (date_delta[0] == 11
                                           and not date_delta[1]):
+                    month_before = 12
                     return personal_average * 12
                 else:
                     if date_delta[1]:
+                        month_before = date_delta[0] + 1
                         return personal_average * (date_delta[0] + 1)
                     else:
+                        month_before = date_delta[0]
                         return personal_average * date_delta[0]
             else:
                 return 0
 
         def money_after(company_in_date, company_out_date, personal_average,
                         society_average):
+            nonlocal month_after
             if company_out_date.year > 2007:
-                company_in_date = datetime.date(2008, 1, 1)
-                date_delta = Compensation_Money.calculate_time_delta(
-                    company_in_date, company_out_date)
+                if company_in_date.year < 2008:
+                    company_in_date = datetime.date(2008, 1, 1)
+                date_delta = Compensation.calculate_time_delta(
+                    company_in_date, company_out_date, check_=True)
                 if date_delta[1] > 6:
                     month_avail = date_delta[0] + 1
-                elif 0 < date_delta[1] < 7:
+                elif date_delta[1] == 6:
+                    if date_delta[2]:
+                        month_avail = date_delta[0] + 1
+                    else:
+                        month_avail = date_delta[0] + 0.5
+                elif 0 < date_delta[1] < 6:
                     month_avail = date_delta[0] + 0.5
                 else:
                     month_avail = date_delta[0]
                 if personal_average > society_average:
                     if month_avail >= 12:
+                        month_after = 12
                         return society_average * 12
                     else:
+                        month_after = month_avail
                         return society_average * month_avail
                 else:
+                    month_after = month_avail
                     return personal_average * month_avail
             else:
                 return 0
@@ -270,10 +443,10 @@ class Compensation_Money(QMainWindow):
             company_in_date, company_out_date, personal_average) + money_after(
                 company_in_date, company_out_date, personal_average,
                 society_average)
-        return compensation_money
+        return compensation_money, month_before, month_after
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    MainWindow = Compensation_Money()
+    MainWindow = Compensation()
     sys.exit(app.exec_())

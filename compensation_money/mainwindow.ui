@@ -442,13 +442,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="text">
@@ -461,13 +461,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="text">
@@ -480,13 +480,13 @@
         <property name="minimumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>90</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="text">
@@ -502,7 +502,7 @@
      <rect>
       <x>420</x>
       <y>10</y>
-      <width>131</width>
+      <width>151</width>
       <height>301</height>
      </rect>
     </property>
@@ -514,8 +514,8 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>111</width>
-       <height>251</height>
+       <width>131</width>
+       <height>271</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -595,6 +595,30 @@
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="compensation_mon_bef_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="compensation_mon_aft_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="Line" name="line_8">
