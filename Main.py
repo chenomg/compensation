@@ -81,12 +81,28 @@ class Compensation(QMainWindow):
         # 设置初始值
         self.ui.gender_comboBox.addItems(["男", "女"])
         self.update_working_years()
+        self.update_compensation_money()
 
     def generate_pushButton_clicked(self):
         name = self.ui.name_lineEdit.text()
         gender = self.ui.gender_comboBox.currentText()
-        birth = self.ui.birthday_dateEdit.text()
+        birth = Compensation.dateEdit_to_dateStr(self.ui.birthday_dateEdit)
         retire_age = self.ui.retire_age_comboBox.currentText()
+        working_start = Compensation.dateEdit_to_dateStr(
+            self.ui.birthday_dateEdit)
+        year_sus = self.ui.working_suspended_year_lineEdit.text().zfill(1)
+        month_sus = self.ui.working_suspended_month_lineEdit.text().zfill(1)
+        company_in = Compensation.dateEdit_to_dateStr(
+            self.ui.company_in_dateEdit)
+        company_out = Compensation.dateEdit_to_dateStr(
+            self.ui.company_out_dateEdit)
+        personal_average = self.ui.personal_average_lineEdit.text()
+        society_average = self.ui.society_average_lineEdit.text()
+        time_to_retire = self.ui.time_to_retire_lineEdit.text()
+        working_years_Y_M = self.ui.working_years_lineEdit.text()
+        compensation_mon_bef = self.ui.compensation_mon_bef_lineEdit.text()
+        compensation_mon_aft = self.ui.compensation_mon_aft_lineEdit.text()
+        compensation = self.ui.compensation_money_lineEdit.text()
         workbook = xlwt.Workbook()
         sheet = workbook.add_sheet("赔偿金登记表")
         row0 = [
@@ -104,7 +120,9 @@ class Compensation(QMainWindow):
             '上年度社会平均工资三倍(元)',
             '离退休时间',
             '累计工龄',
-            '赔偿金额',
+            '赔偿月数(08年前)',
+            '赔偿月数(08年及以后)',
+            '赔偿金额(元)',
         ]
         for i in range(len(row0)):
             sheet.write(0, i, row0[i])
@@ -114,10 +132,23 @@ class Compensation(QMainWindow):
             gender,
             birth,
             retire_age,
-                ]
+            working_start,
+            year_sus,
+            month_sus,
+            company_in,
+            company_out,
+            personal_average,
+            society_average,
+            time_to_retire,
+            working_years_Y_M,
+            compensation_mon_bef,
+            compensation_mon_aft,
+            compensation[:len(compensation) - 1],
+        ]
         for i in range(len(row1)):
             sheet.write(1, i, row1[i])
         workbook.save(os.path.join(os.getcwd(), "赔偿金登记表-{}.xls".format(name)))
+        info = QMessageBox.information(self, "信息", "个人数据导出成功", QMessageBox.Ok)
 
     def xls_calculate_pushButton_clicked(self):
         """
@@ -182,10 +213,21 @@ class Compensation(QMainWindow):
         day = int(dateStr[6:])
         return datetime.date(year, month, day)
 
+    @staticmethod
+    def dateEdit_to_dateStr(dateEdit):
+        """
+        将QdateEdit转换为日期(例:20010101)
+        """
+        date = dateEdit.date()
+        year = str(date.year())
+        month = str(date.month()).zfill(2)
+        day = str(date.day()).zfill(2)
+        return year + month + day
+
     def about_pushButton_clicked(self):
         msgBox = QMessageBox.information(
             self, "About Me...",
-            "Thanks for using :D\nComposed by Jase Chen\n2018-09-01",
+            "Thanks for using :D\n\nComposed by Jase Chen\n\n2018-09-03",
             QMessageBox.Yes)
 
     def set_retire_age(self):
@@ -276,7 +318,7 @@ class Compensation(QMainWindow):
             if delta_day >= 0:
                 delta_month += 1
             # if is_Full_one_month():
-                # delta_month += 1
+            # delta_month += 1
         if delta_month < 0:
             delta_month += 12
             delta_year -= 1
