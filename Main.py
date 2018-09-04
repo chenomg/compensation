@@ -269,8 +269,14 @@ class Compensation(QMainWindow):
         birth = [birth_date.year, birth_date.month, birth_date.day]
         retire_date_ = birth.copy()
         retire_date_[0] += retire_age
-        retire_date = datetime.date(retire_date_[0], retire_date_[1],
-                                    retire_date_[2])
+        if retire_date_[2] != 1:
+            retire_date_[2] -= 1
+            retire_date = datetime.date(retire_date_[0], retire_date_[1],
+                                        retire_date_[2])
+        else:
+            retire_date = datetime.date(
+                retire_date_[0], retire_date_[1],
+                retire_date_[2]) - datetime.timedelta(days=1)
         today = datetime.date.today()
         retire_date_Y_M = Compensation.calculate_time_delta(today, retire_date)
         return retire_date_Y_M
